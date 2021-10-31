@@ -1,30 +1,27 @@
 const startBtn = document.querySelector('#start')
-
 const screens = document.querySelectorAll('.screen')
-
 const timeList = document.querySelector('#time-list')
-
 const timeEl = document.querySelector('#time')
-
 const board =document.querySelector('#board')
+const colors = ['#E58383FF', '#AE6133FF', '#337FAEFF', '#588E66FF', '#58818EFF', '#925798FF', '#C337A2FF', '#75DC8CFF']
 
 let time = 0
 let score = 0
 
-startBtn.addEventListener('click', event => {
+startBtn.addEventListener('click', (event) => {
     event.preventDefault()
     screens[0].classList.add('up')
 })
 
-timeList.addEventListener('click', event => {
+timeList.addEventListener('click', (event) => {
     if (event.target.classList.contains('time-btn')) {
         time = parseInt(event.target.getAttribute('data-time'))
-        setTime(time)
+        screens[1].classList.add('up')
         startGame()
     }
 })
 
-board.addEventListener('click', event => {
+board.addEventListener('click', (event) => {
     if (event.target.classList.contains('circle')) {
         score++
         event.target.remove()
@@ -33,10 +30,10 @@ board.addEventListener('click', event => {
     }
 })
 
-function startGame(){
+function startGame() {
     setInterval(decreaseTime, 1000)
     createRandomCircle()
-    screens[1].classList.add('up')
+    setTime(time)
 }
 
 function decreaseTime(){
@@ -51,6 +48,7 @@ function decreaseTime(){
     }
 
 }
+
 
 function setTime(value) {
     timeEl.innerHTML = `00:${value}`
@@ -74,10 +72,16 @@ function createRandomCircle(){
     circle.style.height = `${size}px`
     circle.style.top = `${y}px`
     circle.style.left = `${x}px`
+    circle.style.background = getRandomColorCircle()
 
     board.append(circle)
 }
 
 function getRandomNumber(min, max){
     return Math.round(Math.random() * (max - min) + min)
+}
+
+function getRandomColorCircle() {
+    const index = Math.floor(Math.random() * colors.length)
+    return colors[index]
 }
